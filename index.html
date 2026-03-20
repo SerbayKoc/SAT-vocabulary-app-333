@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Vocab 333</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3e;--gold:#c9a84c;--gold-dim:#7a6130;--text:#e8e6f0;--text-dim:#7a7890;--text-mid:#a8a6c0;--accent:#6e5ef7;--red:#e05c6a;--green:#4ecb71;--radius:12px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,15,0.93);backdrop-filter:blur(16px);z-index:100;gap:10px;flex-wrap:wrap;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--gold);white-space:nowrap;}
+.nav-brand sup{font-size:.52rem;color:var(--text-dim);vertical-align:super;margin-left:2px;}
+.nav-tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:3px;}
+.nav-tab{padding:6px 14px;border-radius:7px;border:none;background:transparent;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.nav-tab.active{background:var(--accent);color:#fff;}
+.nav-tab:hover:not(.active){color:var(--text);background:var(--surface2);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.lang-toggle{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;}
+.lang-btn{padding:3px 9px;border-radius:5px;border:none;background:transparent;color:var(--text-dim);font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer;transition:all .2s;}
+.lang-btn.active{background:var(--gold);color:#000;font-weight:700;}
+.nav-stat{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-dim);}
+.nav-stat b{color:var(--gold);}
+.page{display:none;padding:26px 28px;max-width:1100px;margin:0 auto;}
+.page.active{display:block;}
+.search-bar{position:relative;margin-bottom:16px;}
+.search-bar input{width:100%;padding:12px 18px 12px 42px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;transition:border-color .2s;}
+.search-bar input:focus{border-color:var(--gold);}
+.search-bar input::placeholder{color:var(--text-dim);}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-dim);pointer-events:none;font-size:.9rem;}
+.filter-row{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+.filter-btn{padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer;transition:all .2s;}
+.filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);}
+.filter-btn:hover:not(.active){border-color:var(--text-dim);color:var(--text-mid);}
+.results-count{margin-left:auto;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-dim);}
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:9px;}
+.word-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;transition:border-color .2s,transform .15s;position:relative;}
+.word-card:hover{border-color:var(--gold-dim);transform:translateY(-1px);}
+.word-card.learned-card{border-color:rgba(78,203,113,.3);}
+.word-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;gap:6px;}
+.word-en{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700;color:var(--text);}
+.word-freq{font-family:'DM Mono',monospace;font-size:.6rem;padding:2px 6px;border-radius:4px;border:1px solid;white-space:nowrap;flex-shrink:0;}
+.freq-high{color:#ff9f43;border-color:rgba(255,159,67,.4);background:rgba(255,159,67,.08);}
+.freq-med{color:#a8a6c0;border-color:rgba(168,166,192,.3);background:rgba(168,166,192,.05);}
+.freq-low{color:#4a4868;border-color:rgba(74,72,104,.4);}
+.word-tr{font-size:.83rem;color:var(--text-mid);line-height:1.4;}
+.word-card-actions{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;}
+.btn-small{padding:3px 9px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'DM Mono',monospace;font-size:.66rem;cursor:pointer;transition:all .2s;}
+.btn-small:hover{border-color:var(--gold-dim);color:var(--gold);}
+.btn-small.added{border-color:var(--accent);color:var(--accent);}
+.btn-small.learned{border-color:var(--green);color:var(--green);}
+.learned-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--green);opacity:.7;}
+.anki-layout{display:grid;grid-template-columns:1fr 310px;gap:20px;align-items:start;}
+.anki-deck-area{display:flex;flex-direction:column;align-items:center;min-height:440px;}
+.anki-card-wrapper{perspective:1200px;width:100%;max-width:490px;height:270px;margin-bottom:18px;cursor:pointer;}
+.anki-card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.anki-card-wrapper.flipped .anki-card-inner{transform:rotateY(180deg);}
+.anki-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px;text-align:center;border:1px solid var(--border);}
+.anki-front{background:linear-gradient(135deg,var(--surface2),var(--surface));}
+.anki-back{background:linear-gradient(135deg,#1a1635,#12121a);transform:rotateY(180deg);border-color:var(--accent);}
+.anki-word{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--text);margin-bottom:9px;}
+.anki-hint{font-size:.72rem;color:var(--text-dim);font-family:'DM Mono',monospace;}
+.anki-meaning{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold);margin-bottom:7px;}
+.anki-tr{font-size:.88rem;color:var(--text-mid);line-height:1.5;}
+.anki-controls{display:flex;gap:9px;align-items:center;}
+.btn-anki{padding:10px 22px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-again{background:rgba(224,92,106,.15);color:var(--red);border:1px solid rgba(224,92,106,.3);}
+.btn-again:hover{background:rgba(224,92,106,.25);}
+.btn-good{background:rgba(78,203,113,.15);color:var(--green);border:1px solid rgba(78,203,113,.3);}
+.btn-good:hover{background:rgba(78,203,113,.25);}
+.btn-flip{background:var(--accent);color:#fff;}
+.btn-flip:hover{opacity:.85;}
+.anki-progress{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-dim);margin-top:5px;}
+.anki-sidebar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;position:sticky;top:78px;}
+.sidebar-title{font-family:'Playfair Display',serif;font-size:.92rem;color:var(--gold);margin-bottom:10px;}
+.deck-list{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;max-height:230px;overflow-y:auto;}
+.deck-item{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:7px;border:1px solid var(--border);}
+.deck-item-word{font-family:'Playfair Display',serif;font-size:.85rem;color:var(--text);}
+.deck-item-remove{border:none;background:none;color:var(--text-dim);cursor:pointer;font-size:.95rem;padding:0 2px;transition:color .2s;}
+.deck-item-remove:hover{color:var(--red);}
+.deck-status{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.status-box{flex:1;text-align:center;}
+.status-num{font-family:'DM Mono',monospace;font-size:1.15rem;font-weight:500;}
+.status-label{font-size:.67rem;color:var(--text-dim);}
+.status-box.known .status-num{color:var(--green);}
+.status-box.again .status-num{color:var(--red);}
+.status-box.total .status-num{color:var(--text-mid);}
+.btn-primary{width:100%;padding:8px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;margin-top:7px;transition:opacity .2s;font-size:.83rem;}
+.btn-primary:hover{opacity:.85;}
+.btn-secondary{width:100%;padding:8px;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;margin-top:4px;transition:all .2s;font-size:.83rem;}
+.btn-secondary:hover{border-color:var(--text-dim);color:var(--text);}
+.progress-hero{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:22px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+.prog-ring{position:relative;width:120px;height:120px;flex-shrink:0;}
+.prog-ring svg{transform:rotate(-90deg);}
+.prog-ring-bg{fill:none;stroke:var(--border);stroke-width:9;}
+.prog-ring-fill{fill:none;stroke:var(--green);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1s ease;}
+.prog-pct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.prog-pct-num{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--text);}
+.prog-pct-label{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-dim);}
+.prog-stats{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:240px;}
+.prog-stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;}
+.prog-stat-num{font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:500;}
+.prog-stat-label{font-size:.72rem;color:var(--text-dim);margin-top:1px;}
+.prog-stat-box.s-green .prog-stat-num{color:var(--green);}
+.prog-stat-box.s-gold .prog-stat-num{color:var(--gold);}
+.prog-stat-box.s-blue .prog-stat-num{color:var(--accent);}
+.prog-stat-box.s-red .prog-stat-num{color:var(--red);}
+.prog-section-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--text);margin-bottom:12px;}
+.prog-section-title span{color:var(--gold);}
+.progress-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.progress-bar-label{font-size:.83rem;color:var(--text-mid);width:175px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
+.progress-bar-track{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.progress-bar-fill{height:100%;border-radius:3px;transition:width .8s ease;}
+.progress-bar-count{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-dim);width:32px;text-align:right;}
+.learned-list-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px;margin-bottom:22px;}
+.learned-chip{background:var(--surface);border:1px solid rgba(78,203,113,.2);border-radius:8px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;}
+.learned-chip-word{font-family:'Playfair Display',serif;font-size:.88rem;color:var(--text);}
+.learned-chip-tr{font-size:.7rem;color:var(--text-dim);margin-top:1px;}
+.learned-chip-remove{border:none;background:none;color:var(--text-dim);cursor:pointer;font-size:.88rem;transition:color .2s;flex-shrink:0;margin-left:6px;}
+.learned-chip-remove:hover{color:var(--red);}
+.btn-clear-learned{padding:7px 18px;border-radius:8px;border:1px solid rgba(224,92,106,.3);background:rgba(224,92,106,.08);color:var(--red);font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;}
+.btn-clear-learned:hover{background:rgba(224,92,106,.18);}
+.opp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.section-title{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--text);}
+.section-title span{color:var(--gold);}
+.mode-toggle{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:3px;}
+.mode-btn{padding:5px 13px;border-radius:5px;border:none;background:transparent;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:.78rem;cursor:pointer;transition:all .2s;}
+.mode-btn.active{background:var(--accent);color:#fff;}
+.pairs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:9px 14px;margin-bottom:26px;}
+.pair-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 14px;}
+.pair-word{font-family:'Playfair Display',serif;font-size:.92rem;font-weight:700;color:var(--text);}
+.pair-meaning{font-size:.75rem;color:var(--text-mid);margin-top:2px;}
+.pair-connector{display:flex;align-items:center;justify-content:center;color:var(--red);font-size:.85rem;font-weight:700;}
+.quiz-area{max-width:560px;margin:0 auto;}
+.quiz-question{text-align:center;margin-bottom:22px;}
+.quiz-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;}
+.quiz-word{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;color:var(--gold);}
+.quiz-word-tr{font-size:.82rem;color:var(--text-dim);margin-top:3px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px;}
+.quiz-option{padding:13px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'Playfair Display',serif;font-size:.92rem;cursor:pointer;transition:all .2s;text-align:center;}
+.quiz-option:hover:not(:disabled){border-color:var(--gold-dim);background:var(--surface2);}
+.quiz-option.correct{border-color:var(--green);background:rgba(78,203,113,.1);color:var(--green);}
+.quiz-option.wrong{border-color:var(--red);background:rgba(224,92,106,.1);color:var(--red);}
+.quiz-option:disabled{cursor:default;}
+.quiz-feedback{text-align:center;min-height:34px;font-size:.88rem;color:var(--text-mid);margin-bottom:12px;}
+.quiz-score{display:flex;justify-content:center;gap:18px;margin-bottom:16px;}
+.score-pill{font-family:'DM Mono',monospace;font-size:.75rem;padding:3px 11px;border-radius:20px;border:1px solid var(--border);}
+.score-pill.correct{border-color:var(--green);color:var(--green);}
+.score-pill.wrong{border-color:var(--red);color:var(--red);}
+.btn-next{display:block;margin:0 auto;padding:10px 30px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer;transition:opacity .2s;}
+.btn-next:hover{opacity:.85;}
+.empty-state{text-align:center;padding:46px 20px;color:var(--text-dim);}
+.empty-state .icon{font-size:2rem;margin-bottom:9px;}
+.empty-state p{font-size:.85rem;}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--surface2);border:1px solid var(--gold-dim);color:var(--gold);padding:8px 16px;border-radius:8px;font-family:'DM Mono',monospace;font-size:.78rem;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;z-index:999;}
+.toast.show{opacity:1;transform:translateY(0);}
+::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:var(--surface);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
+@media(max-width:768px){.nav{padding:10px 12px;}.page{padding:16px 12px;}.anki-layout{grid-template-columns:1fr;}.word-grid{grid-template-columns:1fr;}.quiz-options{grid-template-columns:1fr;}.progress-hero{flex-direction:column;align-items:flex-start;}.prog-stats{grid-template-columns:1fr 1fr;}.nav-stat{display:none;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-brand">Lexicon<sup>333</sup></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('glossary',this)">📖 <span data-i="nav_glossary">Glossary</span></button>
+    <button class="nav-tab" onclick="showPage('anki',this)">🃏 <span data-i="nav_anki">Anki</span></button>
+    <button class="nav-tab" onclick="showPage('opposites',this)">⚡ <span data-i="nav_opp">Opposites</span></button>
+    <button class="nav-tab" onclick="showPage('progress',this)">📊 <span data-i="nav_prog">Progress</span></button>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+      <button class="lang-btn" onclick="setLang('tr',this)">TR</button>
+    </div>
+    <div class="nav-stat"><span data-i="nav_stat">Deck:</span> <b id="deckCount">0</b>/333</div>
+  </div>
+</nav>
+<div class="page active" id="page-glossary">
+  <div class="search-bar"><span class="search-icon">🔍</span><input type="text" id="searchInput" oninput="renderWordCards()"></div>
+  <div class="filter-row"><button class="filter-btn active" onclick="filterLetter('ALL',this)"><span data-i="filter_all">All</span></button><span id="letterFilters"></span><span class="results-count" id="resultsCount">333</span></div>
+  <div class="word-grid" id="wordGrid"></div>
+</div>
+<div class="page" id="page-anki">
+  <div class="anki-layout">
+    <div class="anki-deck-area">
+      <div id="ankiCardWrapper" class="anki-card-wrapper" onclick="flipCard()">
+        <div class="anki-card-inner">
+          <div class="anki-face anki-front"><div class="anki-word" id="ankiFrontWord">—</div><div class="anki-hint" data-i="anki_tap">tap to flip</div></div>
+          <div class="anki-face anki-back"><div class="anki-meaning" id="ankiBackMeaning"></div><div class="anki-tr" id="ankiBackTr"></div></div>
+        </div>
+      </div>
+      <div id="ankiControls" class="anki-controls" style="display:none">
+        <button class="btn-anki btn-again" onclick="rateCard(false)" data-i="anki_again">✗ Again</button>
+        <button class="btn-anki btn-flip" onclick="flipCard()" data-i="anki_flip">↩ Flip</button>
+        <button class="btn-anki btn-good" onclick="rateCard(true)" data-i="anki_knew">✓ Knew it</button>
+      </div>
+      <div class="anki-progress" id="ankiProgress"></div>
+      <div id="ankiEmpty" class="empty-state" style="display:none"><div class="icon">🎴</div><p data-i="anki_empty">Deck is empty. Add words from Glossary!</p></div>
+    </div>
+    <div class="anki-sidebar">
+      <div class="sidebar-title" data-i="sidebar_deck">📚 Deck</div>
+      <div class="deck-list" id="deckList"></div>
+      <button class="btn-primary" onclick="addAllToAnki()" data-i="btn_add_all">Add All 333</button>
+      <button class="btn-secondary" onclick="clearDeck()" data-i="btn_clear_deck">Clear Deck</button>
+      <div class="deck-status">
+        <div class="status-box known"><div class="status-num" id="knownCount">0</div><div class="status-label" data-i="st_knew">Knew</div></div>
+        <div class="status-box again"><div class="status-num" id="againCount">0</div><div class="status-label" data-i="st_again">Again</div></div>
+        <div class="status-box total"><div class="status-num" id="totalAnki">0</div><div class="status-label" data-i="st_total">Total</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page" id="page-opposites">
+  <div class="opp-header">
+    <div class="section-title" id="oppTitle">Opposite <span>Pairs</span></div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" onclick="setOppMode('pairs',this)" data-i="mode_list">List</button>
+      <button class="mode-btn" onclick="setOppMode('quiz',this)" data-i="mode_quiz">Quiz</button>
+    </div>
+  </div>
+  <div id="oppPairsView"></div>
+  <div id="oppQuizView" style="display:none"></div>
+</div>
+<div class="page" id="page-progress">
+  <div class="progress-hero">
+    <div class="prog-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle class="prog-ring-bg" cx="60" cy="60" r="50"/>
+        <circle class="prog-ring-fill" id="progRingFill" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+      </svg>
+      <div class="prog-pct"><div class="prog-pct-num" id="progPct">0%</div><div class="prog-pct-label" data-i="prog_pct_label">learned</div></div>
+    </div>
+    <div class="prog-stats">
+      <div class="prog-stat-box s-green"><div class="prog-stat-num" id="psLearned">0</div><div class="prog-stat-label" data-i="ps_learned">Words Learned</div></div>
+      <div class="prog-stat-box s-gold"><div class="prog-stat-num" id="psRemaining">333</div><div class="prog-stat-label" data-i="ps_remaining">Remaining</div></div>
+      <div class="prog-stat-box s-blue"><div class="prog-stat-num" id="psDeck">0</div><div class="prog-stat-label" data-i="ps_deck">In Deck</div></div>
+      <div class="prog-stat-box s-red"><div class="prog-stat-num" id="psStreak">0</div><div class="prog-stat-label" data-i="ps_streak">Anki Streak</div></div>
+    </div>
+  </div>
+  <div style="margin-bottom:26px;"><div class="prog-section-title" id="freqTitle">Progress by <span>Frequency</span></div><div id="freqBars"></div></div>
+  <div id="learnedSection">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div class="prog-section-title" id="learnedListTitle">Learned <span>Words</span></div>
+      <button class="btn-clear-learned" onclick="clearAllLearned()" data-i="btn_reset">Reset All</button>
+    </div>
+    <div class="learned-list-grid" id="learnedList"></div>
+    <div id="learnedEmpty" class="empty-state" style="display:none"><div class="icon">🌱</div><p data-i="learned_empty">No learned words yet.</p></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const WORDS=[
+{en:"Abate",tr:"azalmak, hafiflemek",f:"H"},{en:"Aberrant",tr:"anormal, sapkın",f:"H"},{en:"Abeyance",tr:"askıya alınmış durum",f:"L"},{en:"Abscond",tr:"gizlice kaçmak",f:"M"},{en:"Abstemious",tr:"yeme-içmede ölçülü, tutumlu",f:"M"},{en:"Admonish",tr:"uyarmak, azarlamak",f:"H"},{en:"Adulterate",tr:"safsızlaştırmak, içine düşük madde katmak",f:"M"},{en:"Aesthetic",tr:"estetik; güzeli takdir eden",f:"H"},{en:"Aggregate",tr:"toplamak, biriktirmek",f:"H"},{en:"Alacrity",tr:"istekli çabukluk, şevkle hazır oluş",f:"H"},{en:"Alleviate",tr:"hafifletmek, azaltmak",f:"H"},{en:"Amalgamate",tr:"birleştirmek, tek bir yapıda birleşmek",f:"M"},{en:"Ambiguous",tr:"belirsiz, çift anlamlı",f:"H"},{en:"Ambivalence",tr:"çelişkili duygular içinde olma hali",f:"H"},{en:"Ameliorate",tr:"iyileştirmek",f:"H"},{en:"Anachronism",tr:"zamansızlık; çağına uymayan şey",f:"M"},{en:"Analogous",tr:"benzer, karşılaştırılabilir",f:"H"},{en:"Anarchy",tr:"anarşi; yönetimsizlik, düzensizlik",f:"M"},{en:"Anomalous",tr:"anormal, kuraldışı",f:"H"},{en:"Antipathy",tr:"antipati, tiksinti, hoşlanmama",f:"H"},{en:"Apathy",tr:"ilgisizlik, kayıtsızlık",f:"H"},{en:"Appease",tr:"yatıştırmak, sakinleştirmek",f:"H"},{en:"Apprise",tr:"bilgilendirmek, haberdar etmek",f:"M"},{en:"Approbation",tr:"onay, beğeni",f:"H"},{en:"Appropriate",tr:"sahiplenmek, el koymak (v.)",f:"M"},{en:"Arduous",tr:"zorlu, zahmetli",f:"H"},{en:"Artless",tr:"içten, samimi; saflık içinde dürüst",f:"M"},{en:"Ascetic",tr:"çileci, zevkten kaçınan",f:"M"},{en:"Assiduous",tr:"çalışkan, gayretli",f:"H"},{en:"Assuage",tr:"hafifletmek; (açlığı) gidermek; (öfkeyi) yatıştırmak",f:"H"},{en:"Attenuate",tr:"inceltmek, zayıflatmak",f:"M"},{en:"Audacious",tr:"cüretkar, cesur",f:"H"},{en:"Austere",tr:"sert, katı; yalın ve süssüz",f:"H"},{en:"Autonomous",tr:"özerk, bağımsız",f:"H"},{en:"Aver",tr:"güvenle öne sürmek, kesinlikle iddia etmek",f:"M"},{en:"Banal",tr:"sıradan, klişe, özgünlükten yoksun",f:"H"},{en:"Belie",tr:"yalanlamak; yanlış izlenim vermek",f:"H"},{en:"Beneficent",tr:"iyiliksever, hayırlı işler yapan",f:"M"},{en:"Bolster",tr:"desteklemek, pekiştirmek",f:"H"},{en:"Bombastic",tr:"şişirilmiş, palavracı",f:"H"},{en:"Boorish",tr:"kaba, nezaketsiz",f:"M"},{en:"Burgeon",tr:"tomurcuklanmak; hızla büyümek",f:"H"},{en:"Burnish",tr:"parlatmak, cilalamak",f:"M"},{en:"Buttress",tr:"desteklemek, payanda koymak",f:"M"},{en:"Capricious",tr:"tutarsız, kaprisi olan, değişken",f:"H"},{en:"Castigation",tr:"sert eleştiri; cezalandırma",f:"M"},{en:"Catalyst",tr:"katalizör; süreci hızlandıran etken",f:"H"},{en:"Caustic",tr:"yakıcı; iğneleyici, acı dilli",f:"H"},{en:"Chicanery",tr:"aldatmaca, hile, kurnazlık",f:"M"},{en:"Coagulate",tr:"pıhtılaşmak, katılaşmak",f:"L"},{en:"Coda",tr:"kapanış bölümü; özet niteliğinde bölüm",f:"M"},{en:"Cogent",tr:"ikna edici, güçlü (argüman)",f:"H"},{en:"Commensurate",tr:"orantılı, denk",f:"H"},{en:"Compendium",tr:"özet; kapsamlı kısa derleme",f:"M"},{en:"Complaisant",tr:"aşırı uysal, hoş görünmeye çalışan",f:"M"},{en:"Compliant",tr:"boyun eğen, uyumlu",f:"H"},{en:"Conciliatory",tr:"uzlaştırıcı, yatıştırıcı",f:"H"},{en:"Condone",tr:"görmezden gelmek, affetmek",f:"H"},{en:"Confound",tr:"şaşırtmak, kafasını karıştırmak",f:"H"},{en:"Connoisseur",tr:"uzman; sanat yargıcı",f:"M"},{en:"Contention",tr:"iddia, tez",f:"H"},{en:"Contentious",tr:"tartışmacı, kavgacı",f:"H"},{en:"Contrite",tr:"pişman, nadim",f:"M"},{en:"Conundrum",tr:"bilmece; çözümü güç sorun",f:"H"},{en:"Converge",tr:"bir araya gelmek, yakınsamak",f:"H"},{en:"Convoluted",tr:"karmaşık, girift",f:"H"},{en:"Craven",tr:"korkak",f:"M"},{en:"Daunt",tr:"yıldırmak, korkutmak",f:"H"},{en:"Decorum",tr:"terbiye, görgü kurallarına uygunluk",f:"H"},{en:"Default",tr:"harekete geçmemek; yükümlülüğü yerine getirmemek",f:"M"},{en:"Deference",tr:"saygı gösterme; birinin isteğine boyun eğme",f:"H"},{en:"Delineate",tr:"tasvir etmek, çizmek, anlatmak",f:"H"},{en:"Denigrate",tr:"karalamak, küçük düşürmek",f:"H"},{en:"Deride",tr:"alay etmek, küçümsemek",f:"H"},{en:"Derivative",tr:"özgün olmayan; başka kaynaktan türetilmiş",f:"H"},{en:"Desiccate",tr:"kurutmak, nem almak",f:"L"},{en:"Desultory",tr:"amaçsız, gelişigüzel",f:"H"},{en:"Deterrent",tr:"caydırıcı şey, engel",f:"H"},{en:"Diatribe",tr:"sert sözlü saldırı, acı eleştiri",f:"M"},{en:"Dichotomy",tr:"iki zıt parçaya bölünme",f:"H"},{en:"Diffidence",tr:"çekingenlik, utangaçlık",f:"H"},{en:"Diffuse",tr:"dağınık; geniş alana yayılmış",f:"H"},{en:"Digression",tr:"konudan sapma",f:"H"},{en:"Dirge",tr:"ağıt, cenaze müziği",f:"M"},{en:"Disabuse",tr:"yanlış kanıyı düzeltmek, yanılgıdan kurtarmak",f:"M"},{en:"Discerning",tr:"keskin zekalı, anlayışlı",f:"H"},{en:"Discordant",tr:"uyumsuz, çelişen",f:"H"},{en:"Discredit",tr:"itibarını sarsmak; inanmamak",f:"H"},{en:"Discrepancy",tr:"tutarsızlık, farklılık",f:"H"},{en:"Discrete",tr:"ayrı, bağımsız parçalardan oluşan",f:"H"},{en:"Disingenuous",tr:"samimiyetsiz, içten pazarlıklı",f:"H"},{en:"Disinterested",tr:"tarafsız, önyargısız",f:"H"},{en:"Disjointed",tr:"tutarsız; bağlantısız",f:"M"},{en:"Dismiss",tr:"göz ardı etmek, reddetmek",f:"H"},{en:"Disparage",tr:"küçümsemek, değerini düşürmek",f:"H"},{en:"Disparate",tr:"temelden farklı, alakasız",f:"H"},{en:"Dissemble",tr:"gizlemek, numara yapmak",f:"M"},{en:"Disseminate",tr:"yaymak, dağıtmak",f:"H"},{en:"Dissolution",tr:"çözülme; ahlaki gevşeme",f:"M"},{en:"Dissonance",tr:"uyumsuzluk, ahenksizlik",f:"H"},{en:"Distend",tr:"şişmek, genişlemek",f:"L"},{en:"Distill",tr:"damıtmak; özünü çıkarmak",f:"M"},{en:"Diverge",tr:"ayrılmak, farklı yönlere gitmek",f:"H"},{en:"Divest",tr:"soymak; mahrum etmek",f:"M"},{en:"Document",tr:"belgelemek",f:"M"},{en:"Dogmatic",tr:"dogmatik; inatla kendi görüşünü dayatan",f:"H"},{en:"Dormant",tr:"uyuyan, hareketsiz; gizil",f:"H"},{en:"Dupe",tr:"kolayca kandırılan kişi",f:"M"},{en:"Ebullient",tr:"coşkulu, heyecanlı",f:"H"},{en:"Eclectic",tr:"seçmeci; farklı kaynaklardan derlenen",f:"H"},{en:"Efficacy",tr:"etkinlik; istenen sonucu doğurma gücü",f:"H"},{en:"Effrontery",tr:"yüzsüzlük, küstahlık",f:"M"},{en:"Elegy",tr:"ağıt; hüzün şiiri",f:"M"},{en:"Elicit",tr:"ortaya çıkarmak, elde etmek",f:"H"},{en:"Embellish",tr:"süslemek; abartarak renklendirmek",f:"H"},{en:"Empirical",tr:"deneyime dayalı, ampirik",f:"H"},{en:"Emulate",tr:"taklit etmek; rekabet etmek",f:"H"},{en:"Endemic",tr:"belirli bir bölge ya da gruba özgü",f:"M"},{en:"Enervate",tr:"zayıflatmak, güçten düşürmek",f:"M"},{en:"Engender",tr:"doğurmak, neden olmak",f:"H"},{en:"Enhance",tr:"artırmak, geliştirmek",f:"H"},{en:"Ephemeral",tr:"kısa ömürlü, gelip geçici",f:"H"},{en:"Equanimity",tr:"ruhsal denge, sakinlik",f:"H"},{en:"Equivocate",tr:"yalan söylemek; muğlak konuşarak yanıltmak",f:"H"},{en:"Erudite",tr:"bilgili, alim",f:"H"},{en:"Esoteric",tr:"anlaşılması güç; yalnızca seçkinlere açık",f:"H"},{en:"Eulogy",tr:"övgü; cenazede söylenen methiye",f:"M"},{en:"Euphemism",tr:"yumuşatılmış ifade",f:"H"},{en:"Exacerbate",tr:"kötüleştirmek, şiddetlendirmek",f:"H"},{en:"Exculpate",tr:"suçsuzluğunu kanıtlamak, aklamak",f:"M"},{en:"Exigency",tr:"acil durum; ivedi gereklilik",f:"M"},{en:"Extrapolation",tr:"çıkarım; mevcut veriden tahmin yürütme",f:"M"},{en:"Facetious",tr:"uygunsuz şakacı; nüktedan ama yersiz",f:"M"},{en:"Facilitate",tr:"kolaylaştırmak",f:"H"},{en:"Fallacious",tr:"yanıltıcı, hatalı",f:"H"},{en:"Fatuous",tr:"aptalca ama kendinden memnun",f:"M"},{en:"Fawning",tr:"dalkavukluk eden, yaltaklanan",f:"M"},{en:"Felicitous",tr:"yerinde, uygun; iyi seçilmiş",f:"H"},{en:"Fervor",tr:"ateşli coşku, yoğun duygu",f:"H"},{en:"Flag",tr:"sarkmak; zayıflamak",f:"M"},{en:"Fledgling",tr:"deneyimsiz; yeni başlayan",f:"M"},{en:"Flout",tr:"küçümsemek; kurala uymayı reddetmek",f:"H"},{en:"Foment",tr:"kışkırtmak, körüklemek",f:"H"},{en:"Forestall",tr:"önceden tedbir alarak önlemek",f:"M"},{en:"Frugality",tr:"tuttumluluk, idarecilik",f:"H"},{en:"Futile",tr:"boşuna, etkisiz, umutsuz",f:"H"},{en:"Gainsay",tr:"inkâr etmek, karşı çıkmak",f:"M"},{en:"Garrulous",tr:"çenesi düşük, geveze",f:"H"},{en:"Goad",tr:"dürtmek, zorlamak",f:"M"},{en:"Gouge",tr:"fahiş fiyat almak, soygunculuk yapmak",f:"L"},{en:"Grandiloquent",tr:"tumturaklı, şişirilmiş dil kullanan",f:"M"},{en:"Gregarious",tr:"sosyal, toplumsal",f:"H"},{en:"Guileless",tr:"kurnazlıktan uzak, saf",f:"M"},{en:"Gullible",tr:"kolay kandırılan, saf",f:"H"},{en:"Harangue",tr:"uzun ve ateşli nutuk",f:"M"},{en:"Homogeneous",tr:"türdeş, aynı cinsten",f:"H"},{en:"Hyperbole",tr:"abartma, mübalağa",f:"H"},{en:"Iconoclastic",tr:"geleneklere meydan okuyan",f:"H"},{en:"Idolatry",tr:"put tapıcılığı; aşırı hayranlık",f:"M"},{en:"Immutable",tr:"değişmez",f:"H"},{en:"Impair",tr:"zayıflatmak, bozmak",f:"H"},{en:"Impassive",tr:"duygusuz, soğukkanlı",f:"H"},{en:"Impede",tr:"engellemek",f:"H"},{en:"Impermeable",tr:"geçirimsiz",f:"L"},{en:"Imperturbable",tr:"sakin; hiçbir şeyle sarsılmaz",f:"H"},{en:"Impervious",tr:"geçirmez; etkilenmez",f:"H"},{en:"Implacable",tr:"yatıştırılamaz, amansız",f:"H"},{en:"Implicit",tr:"söylenmeden anlaşılan, zımni",f:"H"},{en:"Implode",tr:"içe doğru patlamak",f:"L"},{en:"Inadvertently",tr:"istemeden, yanlışlıkla",f:"H"},{en:"Inchoate",tr:"henüz başlamış; gelişmemiş, ham",f:"H"},{en:"Incongruity",tr:"uyumsuzluk, saçmalık",f:"H"},{en:"Inconsequential",tr:"önemsiz",f:"H"},{en:"Incorporate",tr:"bünyeye katmak, birleştirmek",f:"H"},{en:"Indeterminate",tr:"belirsiz, tanımsız",f:"H"},{en:"Indigence",tr:"yoksulluk",f:"M"},{en:"Indolent",tr:"tembel",f:"H"},{en:"Inert",tr:"hareketsiz; tepkisiz",f:"H"},{en:"Ingenuous",tr:"saf, samimi; dünyadan habersiz",f:"H"},{en:"Inherent",tr:"doğasında var olan, özsel",f:"H"},{en:"Innocuous",tr:"zararsız",f:"H"},{en:"Insensible",tr:"bilinçsiz; tepkisiz",f:"M"},{en:"Insinuate",tr:"ima etmek; sinsice sokulma",f:"H"},{en:"Insipid",tr:"tatsız, sıkıcı",f:"H"},{en:"Insularity",tr:"dar görüşlülük; tecrit",f:"M"},{en:"Intractable",tr:"inatçı, denetlenemez",f:"H"},{en:"Intransigence",tr:"uzlaşmazlık, inatçılık",f:"H"},{en:"Inundate",tr:"sular altında bırakmak; bunaltmak",f:"H"},{en:"Inured",tr:"alışmış, pekişmiş",f:"M"},{en:"Invective",tr:"hakaret; sözlü saldırı",f:"M"},{en:"Irascible",tr:"çabuk kızan, sinirli",f:"H"},{en:"Irresolute",tr:"kararsız, iradesiz",f:"H"},{en:"Itinerary",tr:"seyahat planı",f:"M"},{en:"Laconic",tr:"kısa ve öz",f:"H"},{en:"Lassitude",tr:"bitkinlik, yorgunluk",f:"H"},{en:"Latent",tr:"gizil; gizli kalmış, potansiyel",f:"H"},{en:"Laud",tr:"övmek",f:"H"},{en:"Lethargic",tr:"uyuşuk, halsiz",f:"H"},{en:"Levee",tr:"taşkın seti",f:"L"},{en:"Levity",tr:"ciddiyetsizlik, şakacılık",f:"H"},{en:"Log",tr:"kayıt, günlük",f:"M"},{en:"Loquacious",tr:"konuşkan",f:"H"},{en:"Lucid",tr:"açık, anlaşılır",f:"H"},{en:"Luminous",tr:"ışıl ışıl, ışık saçan",f:"M"},{en:"Magnanimity",tr:"cömertlik, yüce gönüllülük",f:"H"},{en:"Malingerer",tr:"hastalık numarası yapan",f:"L"},{en:"Malleable",tr:"şekillendirilebilir; etkilenmeye açık",f:"H"},{en:"Maverick",tr:"asi, kalıplara uymayan",f:"H"},{en:"Mendacious",tr:"yalancı, dürüst olmayan",f:"H"},{en:"Metamorphosis",tr:"dönüşüm, başkalaşım",f:"M"},{en:"Meticulous",tr:"titiz, ayrıntıcı",f:"H"},{en:"Misanthrope",tr:"insanlıktan nefret eden",f:"M"},{en:"Mitigate",tr:"hafifletmek, yatıştırmak",f:"H"},{en:"Mollify",tr:"yatıştırmak",f:"H"},{en:"Morose",tr:"somurtkan, karamsar",f:"H"},{en:"Mundane",tr:"sıradan, dünyevi",f:"H"},{en:"Negate",tr:"geçersiz kılmak, inkâr etmek",f:"H"},{en:"Neophyte",tr:"yeni katılımcı, acemi",f:"M"},{en:"Obdurate",tr:"inatçı, katı",f:"H"},{en:"Obsequious",tr:"aşırı itaatkâr, yaltakçı",f:"H"},{en:"Obviate",tr:"gereksiz kılmak, ortadan kaldırmak",f:"M"},{en:"Occlude",tr:"tıkamak, kapatmak",f:"L"},{en:"Officious",tr:"işe karışan, aşırı hizmet sunan",f:"M"},{en:"Onerous",tr:"külfetli, ağır yük olan",f:"H"},{en:"Opprobrium",tr:"şiddetli kınama; utanç",f:"H"},{en:"Oscillate",tr:"salınmak; kararsız kalmak",f:"H"},{en:"Ostentatious",tr:"gösteriş meraklısı, cafcaflı",f:"H"},{en:"Paragon",tr:"mükemmellik örneği",f:"H"},{en:"Partisan",tr:"tarafgir, tek yanlı",f:"H"},{en:"Pathological",tr:"hastalıkla ilgili; patolojik",f:"M"},{en:"Paucity",tr:"kıtlık, azlık",f:"H"},{en:"Pedantic",tr:"bilgiçlik taslayan",f:"H"},{en:"Penchant",tr:"kuvvetli eğilim, düşkünlük",f:"H"},{en:"Penury",tr:"aşırı yoksulluk; cimrilik",f:"M"},{en:"Perennial",tr:"uzun soluklu, kalıcı",f:"H"},{en:"Perfidious",tr:"hain, sadakatsiz",f:"H"},{en:"Perfunctory",tr:"yüzeysel; ilgisiz ve özensiz",f:"H"},{en:"Permeable",tr:"geçirgen",f:"M"},{en:"Pervasive",tr:"her yere yayılmış",f:"H"},{en:"Phlegmatic",tr:"sakin, kolay heyecanlanmayan",f:"H"},{en:"Piety",tr:"dindarlık, saygı",f:"M"},{en:"Placate",tr:"yatıştırmak, gönlünü almak",f:"H"},{en:"Plasticity",tr:"şekillendirilebilirlik",f:"M"},{en:"Platitude",tr:"basmakalıp söz, klişe",f:"H"},{en:"Plethora",tr:"fazlalık, bolluk",f:"H"},{en:"Plummet",tr:"düşey düşmek, keskin düşüş",f:"H"},{en:"Porous",tr:"gözenekli",f:"M"},{en:"Pragmatic",tr:"pratik, işlevsel",f:"H"},{en:"Preamble",tr:"giriş, önsöz",f:"H"},{en:"Precarious",tr:"güvensiz, riskli",f:"H"},{en:"Precipitate",tr:"aceleci, düşüncesiz, ani (adj.)",f:"H"},{en:"Precursor",tr:"öncü, habercisi",f:"H"},{en:"Presumptuous",tr:"küstah, haddi aşan",f:"H"},{en:"Prevaricate",tr:"yalan söylemek, yanıltmak",f:"H"},{en:"Pristine",tr:"bozulmamış; eski zamanların saf hali",f:"H"},{en:"Probity",tr:"dürüstlük, erdem",f:"H"},{en:"Problematic",tr:"şüpheli; sorunlu",f:"H"},{en:"Prodigal",tr:"savurgan",f:"H"},{en:"Profound",tr:"derin; yüzeysel olmayan",f:"H"},{en:"Prohibitive",tr:"caydırıcı derecede kısıtlayıcı",f:"H"},{en:"Proliferate",tr:"hızla çoğalmak, yayılmak",f:"H"},{en:"Propensity",tr:"doğal eğilim",f:"H"},{en:"Propitiate",tr:"gönlünü almak, yatıştırmak",f:"M"},{en:"Propriety",tr:"uygunluk; doğru davranış",f:"H"},{en:"Proscribe",tr:"yasaklamak; sürgüne göndermek",f:"M"},{en:"Pungent",tr:"keskin kokulu/tatlı; iğneleyici",f:"M"},{en:"Qualified",tr:"sınırlı, kısıtlı",f:"H"},{en:"Quibble",tr:"ufak itiraz, kılı kırk yarmak",f:"M"},{en:"Quiescent",tr:"hareketsiz, sakin; geçici olarak durgun",f:"H"},{en:"Rarefied",tr:"seyrekleştirilmiş; yüksek zümreye ait",f:"M"},{en:"Recalcitrant",tr:"otoriteye direnen, inatçı",f:"H"},{en:"Recant",tr:"geri almak; yanılgısını açıkça kabul etmek",f:"H"},{en:"Recluse",tr:"münzevi, yalnız yaşayan",f:"M"},{en:"Recondite",tr:"anlaşılması güç; derin, gizli",f:"M"},{en:"Refractory",tr:"inatçı, yönetilmesi güç",f:"M"},{en:"Refute",tr:"çürütmek, yalanlamak",f:"H"},{en:"Relegate",tr:"daha alt bir konuma atmak; devretmek",f:"H"},{en:"Reproach",tr:"kınamak, hayal kırıklığını dile getirmek",f:"H"},{en:"Reprobate",tr:"ahlaktan yoksun; günahkâr",f:"M"},{en:"Repudiate",tr:"reddetmek, tanımamak",f:"H"},{en:"Rescind",tr:"iptal etmek",f:"H"},{en:"Resolution",tr:"kararlılık",f:"H"},{en:"Resolve",tr:"kararlılık; amaç sağlamlığı",f:"H"},{en:"Reticent",tr:"sessiz, çekingen; konuşmaktan kaçınan",f:"H"},{en:"Reverent",tr:"saygılı, hürmetkâr",f:"M"},{en:"Sage",tr:"bilge kişi",f:"H"},{en:"Salubrious",tr:"sağlığa yararlı",f:"M"},{en:"Sanction",tr:"onaylamak; yaptırım uygulamak",f:"H"},{en:"Satiate",tr:"tamamen doyurmak",f:"H"},{en:"Saturate",tr:"iyice ıslatmak, doyurmak",f:"M"},{en:"Savor",tr:"tadını çıkarmak; belirgin tat/koku taşımak",f:"M"},{en:"Secrete",tr:"saklamak; salgılamak",f:"M"},{en:"Shard",tr:"kırık parça (özellikle çömlek)",f:"L"},{en:"Skeptic",tr:"şüpheci; kanıt görmeden karar vermeyen",f:"H"},{en:"Solicitous",tr:"endişeli, kaygılı",f:"H"},{en:"Soporific",tr:"uyku getiren, uyutucu",f:"H"},{en:"Specious",tr:"görünüşte makul ama yanlış; yanıltıcı",f:"H"},{en:"Spectrum",tr:"tayf; geniş bir yelpaze",f:"H"},{en:"Sporadic",tr:"düzensiz aralıklarla olan",f:"H"},{en:"Stigma",tr:"leke, damga; utanç işareti",f:"H"},{en:"Stint",tr:"kısıtlamak; eli sıkı olmak (v.)",f:"M"},{en:"Stipulate",tr:"şart koşmak, belirtmek",f:"H"},{en:"Stolid",tr:"durgun, duyarsız",f:"H"},{en:"Striated",tr:"çizgili, yivli",f:"L"},{en:"Strut",tr:"çalımlı yürümek; destek çubuğu",f:"M"},{en:"Subpoena",tr:"tanığı mahkemeye çağıran yazılı emir",f:"L"},{en:"Subside",tr:"sakinleşmek, azalmak, çökmek",f:"H"},{en:"Substantiate",tr:"kanıtlamak, doğrulamak",f:"H"},{en:"Supersede",tr:"yerini almak; geçersiz kılmak",f:"H"},{en:"Supposition",tr:"varsayım, tahmin",f:"H"},{en:"Tacit",tr:"sözsüz anlaşılan, zımni",f:"H"},{en:"Tangential",tr:"ana konuyla çok az ilgili; sapan",f:"H"},{en:"Tenuous",tr:"ince; zayıf; az güvenilir",f:"H"},{en:"Tirade",tr:"uzun ve sert kınama, fırça",f:"H"},{en:"Torpor",tr:"uyuşukluk; hareketsizlik",f:"H"},{en:"Tortuous",tr:"kıvrımlı; dolambaçlı",f:"H"},{en:"Tractable",tr:"uslu, yönetimi kolay",f:"H"},{en:"Transgression",tr:"kural ihlali; günah",f:"H"},{en:"Truculence",tr:"saldırganlık, haşinlik",f:"M"},{en:"Vacillate",tr:"kararsız olmak, bocalamak",f:"H"},{en:"Venerate",tr:"saygıyla anmak, ibadet etmek",f:"H"},{en:"Veracious",tr:"dürüst, gerçeği söyleyen",f:"H"},{en:"Verbose",tr:"fazla kelime kullanan, sözel yönden aşırı",f:"H"},{en:"Viable",tr:"uygulanabilir, işler",f:"H"},{en:"Viscous",tr:"yapışkan, akışkan ama yoğun",f:"M"},{en:"Vituperative",tr:"hakaret dolu, azarlayıcı",f:"M"},{en:"Volatile",tr:"kararsız; patlayıcı; çabuk buharlaşan",f:"H"},{en:"Warranted",tr:"haklı; yetkili",f:"H"},{en:"Wary",tr:"çok ihtiyatlı, temkinli",f:"H"},{en:"Welter",tr:"kaos, kargaşa; karmaşık yığın",f:"M"},{en:"Whimsical",tr:"kaprisli, fantezi dolu",f:"H"},{en:"Zealot",tr:"fanatik; aşırı hevesli kişi",f:"H"}
+];
+const OPPOSITES=[{a:"Laud",b:"Denigrate"},{a:"Garrulous",b:"Laconic"},{a:"Arduous",b:"Futile"},{a:"Alleviate",b:"Exacerbate"},{a:"Ameliorate",b:"Impair"},{a:"Audacious",b:"Craven"},{a:"Ebullient",b:"Phlegmatic"},{a:"Ephemeral",b:"Perennial"},{a:"Frugality",b:"Prodigal"},{a:"Gregarious",b:"Recluse"},{a:"Immutable",b:"Volatile"},{a:"Ingenuous",b:"Disingenuous"},{a:"Innocuous",b:"Caustic"},{a:"Lucid",b:"Convoluted"},{a:"Malleable",b:"Intractable"},{a:"Mendacious",b:"Veracious"},{a:"Ostentatious",b:"Austere"},{a:"Placate",b:"Foment"},{a:"Pragmatic",b:"Dogmatic"},{a:"Reticent",b:"Loquacious"},{a:"Tractable",b:"Recalcitrant"},{a:"Verbose",b:"Laconic"},{a:"Wary",b:"Gullible"},{a:"Assiduous",b:"Indolent"},{a:"Approbation",b:"Opprobrium"},{a:"Disparage",b:"Bolster"},{a:"Cogent",b:"Fallacious"},{a:"Equanimity",b:"Irascible"},{a:"Dormant",b:"Ebullient"},{a:"Disseminate",b:"Occlude"}];
+const I18N={en:{nav_glossary:"Glossary",nav_anki:"Anki",nav_opp:"Opposites",nav_prog:"Progress",nav_stat:"Deck:",filter_all:"All",anki_tap:"tap to flip",anki_again:"✗ Again",anki_flip:"↩ Flip",anki_knew:"✓ Knew it",anki_empty:"Deck is empty. Add words from Glossary!",sidebar_deck:"📚 Deck",btn_add_all:"Add All 333",btn_clear_deck:"Clear Deck",st_knew:"Knew",st_again:"Again",st_total:"Total",mode_list:"List",mode_quiz:"Quiz",opp_title:"Opposite",opp_span:"Pairs",prog_pct_label:"learned",ps_learned:"Words Learned",ps_remaining:"Remaining",ps_deck:"In Deck",ps_streak:"Anki Streak",freq_title:"Progress by",freq_span:"Frequency",learned_list_title:"Learned",learned_list_span:"Words",btn_reset:"Reset All",learned_empty:"No learned words yet.",fH:"High Frequency",fM:"Medium Frequency",fL:"Low Frequency",btn_learn:"✓ Learned",btn_unlearn:"Unlearn",btn_add_anki:"+ Anki",btn_in_anki:"✓ In Deck",words_count:"words",quiz_label:"FIND THE OPPOSITE",search_ph:"Search word or meaning…"},tr:{nav_glossary:"Sözlük",nav_anki:"Anki",nav_opp:"Zıtlar",nav_prog:"İlerleme",nav_stat:"Deste:",filter_all:"Tümü",anki_tap:"kartı çevirmek için tıkla",anki_again:"✗ Tekrar",anki_flip:"↩ Çevir",anki_knew:"✓ Bildim",anki_empty:"Deste boş. Sözlükten kelime ekleyin!",sidebar_deck:"📚 Deste",btn_add_all:"Tümünü Ekle (333)",btn_clear_deck:"Desteyi Temizle",st_knew:"Bildim",st_again:"Tekrar",st_total:"Toplam",mode_list:"Listele",mode_quiz:"Quiz",opp_title:"Zıt",opp_span:"Çiftler",prog_pct_label:"öğrenildi",ps_learned:"Öğrenilen",ps_remaining:"Kalan",ps_deck:"Destede",ps_streak:"Anki Serisi",freq_title:"Sıklığa Göre",freq_span:"İlerleme",learned_list_title:"Öğrenilen",learned_list_span:"Kelimeler",btn_reset:"Sıfırla",learned_empty:"Henüz öğrenilen kelime yok.",fH:"Yüksek Sıklık",fM:"Orta Sıklık",fL:"Düşük Sıklık",btn_learn:"✓ Öğrendim",btn_unlearn:"Geri Al",btn_add_anki:"+ Ankiye",btn_in_anki:"✓ Destede",words_count:"kelime",quiz_label:"ZITTINI BUL",search_ph:"Kelime veya anlam ara…"}};
+function t(k){return I18N[lang][k]||k;}
+let lang='en',currentLetter='ALL',deck=[],learnedSet=new Set(),ankiQueue=[],ankiIndex=0,isFlipped=false,knownCount=0,againCount=0,oppMode='pairs',quizState={answered:false,correct:0,wrong:0,currentPair:null};
+function save(){try{localStorage.setItem('l333_deck',JSON.stringify(deck));localStorage.setItem('l333_learned',JSON.stringify([...learnedSet]));localStorage.setItem('l333_lang',lang);localStorage.setItem('l333_known',knownCount);localStorage.setItem('l333_again',againCount);}catch(e){}}
+function load(){try{const d=localStorage.getItem('l333_deck');if(d)deck=JSON.parse(d);const l=localStorage.getItem('l333_learned');if(l)learnedSet=new Set(JSON.parse(l));const lg=localStorage.getItem('l333_lang');if(lg)lang=lg;knownCount=parseInt(localStorage.getItem('l333_known')||0);againCount=parseInt(localStorage.getItem('l333_again')||0);}catch(e){}}
+function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(I18N[lang][k])el.textContent=I18N[lang][k];});document.getElementById('searchInput').placeholder=t('search_ph');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent===lang.toUpperCase()));document.getElementById('oppTitle').innerHTML=t('opp_title')+' <span>'+t('opp_span')+'</span>';document.getElementById('freqTitle').innerHTML=t('freq_title')+' <span>'+t('freq_span')+'</span>';document.getElementById('learnedListTitle').innerHTML=t('learned_list_title')+' <span>'+t('learned_list_span')+'</span>';}
+function setLang(l,btn){lang=l;save();applyLang();renderWordCards();renderDeckList();renderOpposites();renderProgress();}
+function initGlossary(){const letters=[...new Set(WORDS.map(w=>w.en[0]))].sort();document.getElementById('letterFilters').innerHTML=letters.map(l=>'<button class="filter-btn" onclick="filterLetter(\''+l+'\',this)">'+l+'</button>').join('');renderWordCards();}
+function renderWordCards(){const q=document.getElementById('searchInput').value.toLowerCase();let filtered=WORDS.filter(w=>{const ml=currentLetter==='ALL'||w.en[0]===currentLetter;const mq=!q||w.en.toLowerCase().includes(q)||w.tr.toLowerCase().includes(q);return ml&&mq;});document.getElementById('resultsCount').textContent=filtered.length+' '+t('words_count');document.getElementById('wordGrid').innerHTML=filtered.map(w=>{const inDeck=deck.some(d=>d.en===w.en);const learned=learnedSet.has(w.en);const fc=w.f==='H'?'freq-high':w.f==='M'?'freq-med':'freq-low';return '<div class="word-card'+(learned?' learned-card':'')+'">'+( learned?'<div class="learned-dot"></div>':'')+'<div class="word-card-top"><div class="word-en">'+w.en+'</div><div class="word-freq '+fc+'">'+t('f'+w.f)+'</div></div><div class="word-tr">'+w.tr+'</div><div class="word-card-actions"><button class="btn-small '+(learned?'learned':'')+'" onclick="toggleLearned(\''+w.en+'\',this)">'+(learned?t('btn_unlearn'):t('btn_learn'))+'</button><button class="btn-small '+(inDeck?'added':'')+'" onclick="toggleDeck(\''+w.en+'\',this)">'+(inDeck?t('btn_in_anki'):t('btn_add_anki'))+'</button></div></div>';}).join('');}
+function filterLetter(letter,btn){currentLetter=letter;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderWordCards();}
+function toggleLearned(en,btn){if(learnedSet.has(en))learnedSet.delete(en);else{learnedSet.add(en);showToast('"'+en+'" ✓');}save();renderWordCards();renderProgress();}
+function toggleDeck(en,btn){const word=WORDS.find(w=>w.en===en);const idx=deck.findIndex(d=>d.en===en);if(idx===-1){deck.push({...word});showToast('"'+en+'" → deck');}else deck.splice(idx,1);save();updateDeckCount();renderDeckList();renderWordCards();resetAnkiQueue();}
+function addAllToAnki(){WORDS.forEach(w=>{if(!deck.some(d=>d.en===w.en))deck.push({...w});});save();updateDeckCount();renderDeckList();renderWordCards();resetAnkiQueue();showToast('333 → deck');}
+function clearDeck(){deck=[];knownCount=0;againCount=0;save();updateDeckCount();renderDeckList();renderWordCards();resetAnkiQueue();}
+function updateDeckCount(){document.getElementById('deckCount').textContent=deck.length;document.getElementById('totalAnki').textContent=deck.length;document.getElementById('knownCount').textContent=knownCount;document.getElementById('againCount').textContent=againCount;document.getElementById('psDeck').textContent=deck.length;document.getElementById('psStreak').textContent=knownCount;}
+function renderDeckList(){const list=document.getElementById('deckList');if(deck.length===0){list.innerHTML='<div style="color:var(--text-dim);font-size:.78rem;text-align:center;padding:14px 0;">empty</div>';return;}list.innerHTML=deck.map((w,i)=>'<div class="deck-item"><span class="deck-item-word">'+w.en+'</span><button class="deck-item-remove" onclick="removeDeckItem('+i+')">×</button></div>').join('');}
+function removeDeckItem(i){deck.splice(i,1);save();updateDeckCount();renderDeckList();renderWordCards();resetAnkiQueue();}
+function resetAnkiQueue(){ankiQueue=[...deck];shuffle(ankiQueue);ankiIndex=0;isFlipped=false;loadAnkiCard();}
+function loadAnkiCard(){const wrapper=document.getElementById('ankiCardWrapper');const empty=document.getElementById('ankiEmpty');const controls=document.getElementById('ankiControls');const progress=document.getElementById('ankiProgress');wrapper.classList.remove('flipped');isFlipped=false;controls.style.display='none';if(ankiQueue.length===0){wrapper.style.display='none';empty.style.display='block';progress.textContent='';return;}empty.style.display='none';wrapper.style.display='block';if(ankiIndex>=ankiQueue.length){ankiIndex=0;shuffle(ankiQueue);}const word=ankiQueue[ankiIndex];document.getElementById('ankiFrontWord').textContent=word.en;document.getElementById('ankiBackMeaning').textContent=word.en;document.getElementById('ankiBackTr').textContent=word.tr;progress.textContent=(ankiIndex+1)+' / '+ankiQueue.length;}
+function flipCard(){const w=document.getElementById('ankiCardWrapper');const c=document.getElementById('ankiControls');if(!isFlipped){w.classList.add('flipped');isFlipped=true;c.style.display='flex';}else{w.classList.remove('flipped');isFlipped=false;c.style.display='none';}}
+function rateCard(knew){if(knew){knownCount++;learnedSet.add(ankiQueue[ankiIndex].en);}else againCount++;ankiIndex++;save();updateDeckCount();renderProgress();loadAnkiCard();}
+function renderOpposites(){if(oppMode==='pairs')renderPairs();else renderQuizArea();}
+function setOppMode(mode,btn){oppMode=mode;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('oppPairsView').style.display=mode==='pairs'?'block':'none';document.getElementById('oppQuizView').style.display=mode==='quiz'?'block':'none';renderOpposites();}
+function getMeaning(en){const w=WORDS.find(w=>w.en.toLowerCase()===en.toLowerCase());return w?w.tr:'—';}
+function renderPairs(){document.getElementById('oppPairsView').innerHTML='<div class="pairs-grid">'+OPPOSITES.map(p=>'<div class="pair-cell"><div class="pair-word">'+p.a+'</div><div class="pair-meaning">'+getMeaning(p.a)+'</div></div><div class="pair-connector">⟷</div><div class="pair-cell"><div class="pair-word">'+p.b+'</div><div class="pair-meaning">'+getMeaning(p.b)+'</div></div>').join('')+'</div>';}
+function renderQuizArea(){const view=document.getElementById('oppQuizView');const pair=OPPOSITES[Math.floor(Math.random()*OPPOSITES.length)];quizState.currentPair=pair;quizState.answered=false;const allWords=[...new Set(OPPOSITES.flatMap(p=>[p.a,p.b]))];const correct=Math.random()>.5?pair.a:pair.b;const correctOpp=correct===pair.a?pair.b:pair.a;let dis=allWords.filter(w=>w!==correct&&w!==correctOpp);shuffle(dis);dis=dis.slice(0,3);const opts=shuffle([correctOpp,...dis]);view.innerHTML='<div class="quiz-area"><div class="quiz-score"><span class="score-pill correct">✓ '+quizState.correct+'</span><span class="score-pill wrong">✗ '+quizState.wrong+'</span></div><div class="quiz-question"><div class="quiz-label">'+t('quiz_label')+'</div><div class="quiz-word">'+correct+'</div><div class="quiz-word-tr">'+getMeaning(correct)+'</div></div><div class="quiz-options">'+opts.map(o=>'<button class="quiz-option" onclick="answerQuiz(\''+o+'\',\''+correctOpp+'\',this)">'+o+'<br><small style="font-family:DM Sans;font-size:.68rem;color:var(--text-dim)">'+getMeaning(o)+'</small></button>').join('')+'</div><div class="quiz-feedback" id="quizFeedback"></div><button class="btn-next" id="btnNext" onclick="renderQuizArea()" style="display:none">Next →</button></div>';}
+function answerQuiz(chosen,correct,btn){if(quizState.answered)return;quizState.answered=true;document.querySelectorAll('.quiz-option').forEach(b=>{b.disabled=true;if(b.textContent.trim().startsWith(correct))b.classList.add('correct');});const fb=document.getElementById('quizFeedback');if(chosen===correct){btn.classList.add('correct');quizState.correct++;fb.innerHTML='<span style="color:var(--green)">✓ Correct!</span>';}else{btn.classList.add('wrong');quizState.wrong++;fb.innerHTML='<span style="color:var(--red)">✗</span> → <b style="color:var(--gold)">'+correct+'</b>';}document.getElementById('btnNext').style.display='block';}
+function renderProgress(){const n=learnedSet.size;const pct=Math.round(n/333*100);const C=2*Math.PI*50;document.getElementById('progRingFill').style.strokeDashoffset=C*(1-n/333);document.getElementById('progPct').textContent=pct+'%';document.getElementById('psLearned').textContent=n;document.getElementById('psRemaining').textContent=333-n;document.getElementById('psDeck').textContent=deck.length;document.getElementById('psStreak').textContent=knownCount;const groups={H:{total:0,learned:0},M:{total:0,learned:0},L:{total:0,learned:0}};WORDS.forEach(w=>{groups[w.f].total++;if(learnedSet.has(w.en))groups[w.f].learned++;});const colors={H:'#ff9f43',M:'var(--accent)',L:'var(--text-dim)'};document.getElementById('freqBars').innerHTML=['H','M','L'].map(k=>{const g=groups[k];const p2=g.total?Math.round(g.learned/g.total*100):0;return '<div class="progress-bar-row"><div class="progress-bar-label">'+t('f'+k)+' <span style="color:var(--text-dim);font-size:.7rem">('+g.total+')</span></div><div class="progress-bar-track"><div class="progress-bar-fill" style="width:'+p2+'%;background:'+colors[k]+'"></div></div><div class="progress-bar-count">'+p2+'%</div></div>';}).join('');const ll=document.getElementById('learnedList');const le=document.getElementById('learnedEmpty');if(learnedSet.size===0){ll.innerHTML='';le.style.display='block';return;}le.style.display='none';ll.innerHTML=[...learnedSet].sort().map(en=>{const w=WORDS.find(x=>x.en===en);return '<div class="learned-chip"><div><div class="learned-chip-word">'+en+'</div><div class="learned-chip-tr">'+(w?w.tr:'—')+'</div></div><button class="learned-chip-remove" onclick="unlearn(\''+en+'\')">×</button></div>';}).join('');}
+function unlearn(en){learnedSet.delete(en);save();renderWordCards();renderProgress();}
+function clearAllLearned(){learnedSet.clear();save();renderWordCards();renderProgress();showToast('Progress reset');}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function showPage(name,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');if(btn)btn.classList.add('active');if(name==='progress')renderProgress();if(name==='opposites')renderOpposites();}
+load();applyLang();initGlossary();renderDeckList();updateDeckCount();resetAnkiQueue();renderOpposites();
+</script>
+</body>
+</html>
