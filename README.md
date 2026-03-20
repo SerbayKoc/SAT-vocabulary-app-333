@@ -10,8 +10,6 @@
 
 **[serbaykoc.github.io/SAT-vocabulary-app-333/SATvocab333.html](https://serbaykoc.github.io/SAT-vocabulary-app-333/SATvocab333.html)**
 
-*(Enable GitHub Pages: Settings → Pages → Source: main / root)*
-
 ---
 
 ## Features
@@ -41,11 +39,6 @@ cd SAT-vocabulary-app-333
 open SATvocab333.html
 ```
 
-### GitHub Pages
-
-1. Fork or clone the repo
-2. Go to **Settings → Pages → Source → main branch / root**
-3. App goes live at `https://YOUR-USERNAME.github.io/SAT-vocabulary-app-333/SATvocab333.html`
 
 ---
 
