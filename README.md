@@ -28,7 +28,7 @@
 ### Local
 ```bash
 git clone https://github.com/your-username/sat-vocab-333.git
-open sat-vocab-333/index.html
+open sat-vocab-333/SATvocab333.html
 ```
 
 ### GitHub Pages
