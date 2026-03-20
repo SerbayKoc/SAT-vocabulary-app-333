@@ -6,42 +6,53 @@
 
 ---
 
+## Live Demo
+
+**[serbaykoc.github.io/SAT-vocabulary-app-333/SATvocab333.html](https://serbaykoc.github.io/SAT-vocabulary-app-333/SATvocab333.html)**
+
+*(Enable GitHub Pages: Settings → Pages → Source: main / root)*
+
+---
+
 ## Features
 
 | Tab | What it does |
 |-----|-------------|
-| 📖 **Glossary** | Browse all 333 words with Turkish translations, frequency badges, letter filters, and live search. Mark words as "Known" directly. |
-| 🃏 **Anki** | Flashcard deck with flip animation. "Got it" auto-marks the word as known. Add all 333 or pick individually. |
-| ⚡ **Antonyms** | 30 curated opposite pairs. Reference list + 4-option quiz with score tracking. |
-| 📊 **Progress** | Circular progress dial, % learned, session counter, known-word list, frequency-ranked bar chart of top 40 words. |
+| 📖 **Glossary** | Browse all 333 words with Turkish translations, frequency badges (High / Medium / Low), letter filters, and live search. Mark words as learned directly. |
+| 🃏 **Anki** | Flashcard deck with flip animation. "Knew it" auto-marks the word as learned. Add all 333 at once or pick individually. |
+| ⚡ **Opposites** | 30 curated antonym pairs in reference list view + a 4-option quiz with live score tracking. |
+| 📊 **Progress** | Circular progress dial, % learned, per-frequency breakdown bars, and your full learned-word history. |
 
 **Other details:**
 - 🌐 EN / TR language toggle
-- 💾 localStorage persistence — progress survives reloads
+- 💾 `localStorage` persistence — progress survives reloads and browser restarts
 - 📱 Fully responsive (mobile-friendly)
-- ⚡ Zero build step — open index.html in any browser
+- ⚡ Zero dependencies — just open the HTML file in any browser
 
 ---
 
 ## Quick Start
 
 ### Local
+
 ```bash
-git clone https://github.com/your-username/sat-vocab-333.git
-open sat-vocab-333/SATvocab333.html
+git clone https://github.com/SerbayKoc/SAT-vocabulary-app-333.git
+cd SAT-vocabulary-app-333
+open SATvocab333.html
 ```
 
 ### GitHub Pages
-1. Fork this repo
-2. Settings → Pages → source: `main` branch, `/ (root)`
-3. Live at `https://your-username.github.io/sat-vocab-333`
+
+1. Fork or clone the repo
+2. Go to **Settings → Pages → Source → main branch / root**
+3. App goes live at `https://YOUR-USERNAME.github.io/SAT-vocabulary-app-333/SATvocab333.html`
 
 ---
 
 ## File Structure
 
 ```
-sat-vocab-333/
+SAT-vocabulary-app-333/
 ├── SATvocab333.html   ← entire app (self-contained)
 └── README.md
 ```
@@ -50,14 +61,16 @@ sat-vocab-333/
 
 ## Word List
 
-333 words from **Barron's GRE High-Frequency Word List**, overlapping heavily with SAT Reading & Writing vocabulary. Each word has an English definition, Turkish translation, and SAT corpus frequency score (35–95).
+333 words from the **Barron's GRE High-Frequency Word List**, overlapping heavily with SAT Reading & Writing vocabulary. Each word has a Turkish translation and a frequency tier (High / Medium / Low) based on appearance rate in official SAT/GRE materials.
 
 ---
 
 ## Contributing
 
-PRs welcome: fix translations, add antonym pairs, add languages, improve quiz logic.
+PRs welcome — fix translations, add antonym pairs, add new languages, or improve quiz logic.
+
+---
 
 ## License
 
-MIT
+MIT © 2025 Serbay Koç
