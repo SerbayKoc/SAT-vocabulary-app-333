@@ -42,7 +42,7 @@ open sat-vocab-333/index.html
 
 ```
 sat-vocab-333/
-├── index.html   ← entire app (self-contained)
+├── SATvocab333.html   ← entire app (self-contained)
 └── README.md
 ```
 
